@@ -3,14 +3,14 @@ package view;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.util.Objects;
 
 public class PetCanvas extends Canvas {
     private final GraphicsContext gc;
     private final Image petImage;
-    private final double imageWidth;
-    private final double imageHeight;
+    private static final double PET_SIZE = 64; // Fixed 64x64 size
 
     public PetCanvas(double width, double height) {
         super(width, height);
@@ -20,29 +20,40 @@ public class PetCanvas extends Canvas {
         this.petImage = new Image(
                 Objects.requireNonNull(getClass().getResource("/images/pet.png")).toExternalForm()
         );
-
-        // Cache image dimensions
-        this.imageWidth = petImage.getWidth();
-        this.imageHeight = petImage.getHeight();
     }
 
+    /**
+     * Redraw the canvas at the specified pet position.
+     * @param petX X-coordinate for the pet (top-left)
+     * @param petY Y-coordinate for the pet (top-left)
+     */
     public void redraw(double petX, double petY) {
         // Clear entire canvas
         gc.clearRect(0, 0, getWidth(), getHeight());
 
         // Optional: Draw background
-        // gc.setFill(Color.LIGHTBLUE);
-        // gc.fillRect(0, 0, getWidth(), getHeight());
+        gc.setFill(Color.LIGHTBLUE); // Example background color
+        gc.fillRect(0, 0, getWidth(), getHeight());
 
-        // Draw pet image at specified position
-        gc.drawImage(petImage, petX, petY);
+        // Draw pet at fixed 64x64 size
+        gc.drawImage(petImage, petX, petY, PET_SIZE, PET_SIZE);
+    }
+
+    /** Returns the fixed width of the pet image */
+    public double getPetWidth() {
+        return PET_SIZE;
+    }
+
+    /** Returns the fixed height of the pet image */
+    public double getPetHeight() {
+        return PET_SIZE;
     }
 
     public double getImageWidth() {
-        return imageWidth;
+        return PET_SIZE;
     }
 
     public double getImageHeight() {
-        return imageHeight;
+        return PET_SIZE;
     }
 }
